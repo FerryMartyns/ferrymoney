@@ -25,7 +25,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
         String messageUsuario = messageSource.getMessage("mensagem.invalida", null, LocaleContextHolder.getLocale());
-        String messageDev = ex.getClass().toString();
+        String messageDev = ex.getCause().toString();
         return handleExceptionInternal(ex, new Erro(messageUsuario, messageDev), headers, HttpStatus.BAD_REQUEST,
                 request);
     }
