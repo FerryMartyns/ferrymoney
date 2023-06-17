@@ -2,6 +2,8 @@ package br.com.ferrymoney.api.servicos;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,12 @@ public class CategoriaServico {
     @Transactional(readOnly = true)
     public List<Categoria> buscaTodas() {
         return categoriaRepositorio.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Categoria buscaUma(Long codigo) {
+        return categoriaRepositorio.findById(codigo)
+                .orElseThrow(() -> new EntityNotFoundException("Categoria com codigo " + codigo + " não encontrada."));
     }
 
     @Transactional

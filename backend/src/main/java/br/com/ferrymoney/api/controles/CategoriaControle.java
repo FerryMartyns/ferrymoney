@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,11 @@ public class CategoriaControle {
     @GetMapping
     public ResponseEntity<List<Categoria>> buscaTodas() {
         return ResponseEntity.ok(categoriaServico.buscaTodas());
+    }
+
+    @GetMapping("/{codigo}")
+    public ResponseEntity<Categoria> buscaTodas(@PathVariable Long codigo) {
+        return ResponseEntity.ok(categoriaServico.buscaUma(codigo));
     }
 
     @PostMapping
