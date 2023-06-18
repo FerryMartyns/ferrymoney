@@ -3,6 +3,8 @@ package br.com.ferrymoney.api.controles;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +36,7 @@ public class CategoriaControle {
     }
 
     @PostMapping
-    public ResponseEntity<Categoria> inserir(@RequestBody Categoria categoria, UriComponentsBuilder uri) {
+    public ResponseEntity<Categoria> inserir(@Valid @RequestBody Categoria categoria, UriComponentsBuilder uri) {
         Categoria salva = categoriaServico.inserir(categoria);
         URI link = uri.path("/categorias/{id}").buildAndExpand(salva.getCodigo()).toUri();
 
