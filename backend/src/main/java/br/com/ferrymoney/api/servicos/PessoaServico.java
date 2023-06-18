@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +25,38 @@ public class PessoaServico {
 
     @Transactional(readOnly = true)
     public Pessoa buscaUm(Long id) {
-        return pessoaRepositorio.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Pessoa com id " + id + "não encontrada."));
+        return buscaPessoaPorId(id);
     }
 
     @Transactional
     public Pessoa cadastra(Pessoa pessoa) {
+        return persistePessoa(pessoa);
+    }
+
+    @Transactional
+    public void exclui(Long id) {
+        Pessoa pessoa = buscaPessoaPorId(id);
+        pessoaRepositorio.delete(pessoa);
+    }
+
+    public Pessoa atualiza(Long id, Pessoa pessoa) {
+        Pessoa pessoaSalva = buscaPessoaPorId(id);
+        BeanUtils.copyProperties(pessoa, pessoaSalva, "codigo");
+        return persistePessoa(pessoaSalva);
+    }
+
+    public void atualizaAtivo(Long codigo, Boolean flag) {
+        Pessoa pessoa = buscaPessoaPorId(codigo);
+        pessoa.setAtivo(flag);
+        persistePessoa(pessoa);
+    }
+
+    private Pessoa buscaPessoaPorId(Long id) {
+        return pessoaRepositorio.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Pessoa com id " + id + " não encontrada."));
+    }
+
+    private Pessoa persistePessoa(Pessoa pessoa) {
         return pessoaRepositorio.save(pessoa);
     }
 }
