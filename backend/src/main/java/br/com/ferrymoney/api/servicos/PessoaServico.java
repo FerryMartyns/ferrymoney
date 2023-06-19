@@ -39,12 +39,14 @@ public class PessoaServico {
         pessoaRepositorio.delete(pessoa);
     }
 
+    @Transactional
     public Pessoa atualiza(Long id, Pessoa pessoa) {
         Pessoa pessoaSalva = buscaPessoaPorId(id);
         BeanUtils.copyProperties(pessoa, pessoaSalva, "codigo");
         return persistePessoa(pessoaSalva);
     }
 
+    @Transactional
     public void atualizaAtivo(Long codigo, Boolean flag) {
         Pessoa pessoa = buscaPessoaPorId(codigo);
         pessoa.setAtivo(flag);
